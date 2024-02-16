@@ -59,8 +59,7 @@ let esri = {
   draw: '',
   rasterStatsLayer: '',
   zeroScoresClamLayer: '',
-  onshore: '',
-  offshore: '',
+  allLayer: '',
   userAreaGraphic: '',
 };
 
@@ -126,9 +125,9 @@ export default {
       //center: [-70.99501567725498, 42.310350073610834],
       //center: [-76.62437061849212,9.069409582028836],
       //center: [134.5333012629267, 7.670899903887507],
-      center: [-111.59780381851137, 27.589131092775823],
+      center: [29.833332, -6.5],
 
-      zoom: 6,
+      zoom: 7,
       container: this.$el,
     });
 
@@ -154,20 +153,20 @@ export default {
     //create any pre-loaded feature layers?
     //TODO: add this to config not needed?
 
-    esri.offshore = new FeatureLayer({
-      url: this.$store.state.config.supportingMapLayers[0].mapService + '/' + 2,
-      visible: false,
-    });
-    esri.map.add(esri.offshore);
-
     //esri.finfishLayer = new FeatureLayer({
     //  url: this.$store.state.config.supportingMapLayers[0].mapService + '/' + 2,
     //  visible: false,
     //});
     //esri.map.add(esri.finfishLayer);
 
+    esri.allLayer = new FeatureLayer({
+      url: this.$store.state.config.supportingMapLayers[0].mapService + '/' + 2,
+      visible: false,
+    });
+    esri.map.add(esri.allLayer);
+
     esri.rasterStatsLayer = new FeatureLayer({
-      url: this.$store.state.config.supportingMapLayers[0].mapService + '/' + 0,
+      url: this.$store.state.config.supportingMapLayers[0].mapService + '/' + 2,
       visible: false,
     });
     esri.map.add(esri.rasterStatsLayer);
@@ -361,6 +360,7 @@ export default {
     updateSupportingOpacity() {
       let l = this.supportingVisibleLayerOpacity;
       // if it is a raster find the sublayer and set the opacity
+      console.log(l);
       if (l.type === 'Raster Layer') {
         let layer = esri.map.layers.items.find((layer) => {
           return (
@@ -640,39 +640,39 @@ export default {
     //getRaster statistics
     getRasterStatistics(polygon) {
       let avgDepthDef = {
-        onStatisticField: 'Mexico_Bat',
+        onStatisticField: 'BT_LakeT_dbm',
         outStatisticFieldName: 'avg_depth',
         statisticType: 'avg',
       };
       let minDepthDef = {
-        onStatisticField: 'Mexico_Bat',
+        onStatisticField: 'BT_LakeT_dbm',
         outStatisticFieldName: 'min_depth',
         statisticType: 'min',
       };
       let maxDepthDef = {
-        onStatisticField: 'Mexico_Bat',
+        onStatisticField: 'BT_LakeT_dbm',
         outStatisticFieldName: 'max_depth',
         statisticType: 'max',
       };
-      let avgHSIGDef = {
-        onStatisticField: 'Mexico_Wav',
-        outStatisticFieldName: 'avg_hsig',
+      let avgWind = {
+        onStatisticField: 'LakeT_Wind_95th_100',
+        outStatisticFieldName: 'avg_wind',
         statisticType: 'avg',
       };
-      let minHSIGDef = {
-        onStatisticField: 'Mexico_Wav',
-        outStatisticFieldName: 'min_hsig',
+      let minWind = {
+        onStatisticField: 'LakeT_Wind_95th_100',
+        outStatisticFieldName: 'min_wind',
         statisticType: 'min',
       };
-      let maxHSIGDef = {
-        onStatisticField: 'Mexico_Wav',
-        outStatisticFieldName: 'max_hsig',
+      let maxWind = {
+        onStatisticField: 'LakeT_Wind_95th_100',
+        outStatisticFieldName: 'max_wind',
         statisticType: 'max',
       };
       //TODO: GET AVG RASTER SCORES HERE
       let stats = [
         [avgDepthDef, minDepthDef, maxDepthDef],
-        [avgHSIGDef, minHSIGDef, maxHSIGDef],
+        [avgWind, minWind, maxWind],
       ];
       let rasterStats = [];
       for (var i = 0; i < stats.length; i++) {
@@ -701,12 +701,12 @@ export default {
     },
 
     getAvgSuitability(polygon) {
-      let species = this.$store.state.userProcess.species;
-      let layer = species == 'onshore' ? esri.onshore : esri.offshore;
+      //let species = this.$store.state.userProcess.species;
+      let layer = esri.allLayer;
       let query = layer.createQuery();
 
       let avgSuitabilityDefinition = {
-        onStatisticField: 'final_scor',
+        onStatisticField: 'final_score_prod',
         outStatisticFieldName: 'avg_score',
         statisticType: 'avg',
       };
@@ -733,8 +733,8 @@ export default {
     },
 
     getSuitabilityData(polygon) {
-      let species = this.$store.state.userProcess.species;
-      let layer = species == 'onshore' ? esri.onshore : esri.offshore;
+      //let species = this.$store.state.userProcess.species;
+      let layer = esri.allLayer;
       let query = layer.createQuery();
 
       query.geometry = polygon;
@@ -771,7 +771,7 @@ export default {
         let suitability = {
           zeros: zeros,
           warnings: warnings,
-          species: species,
+          species: 'all',
         };
         console.log(suitability);
         this.$store.commit('updateUserResultsSuitability', suitability);

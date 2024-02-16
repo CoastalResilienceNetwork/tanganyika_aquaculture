@@ -191,11 +191,14 @@ export default {
     },
     showLayers(val, layers) {
       let layerIds = [];
+      console.log(layers);
       layers.forEach((layer) => {
         if (!this.viewLayers.includes(layer.id)) {
           layerIds.push(layer.id);
         }
       });
+      console.log(this.viewLayers);
+      console.log(layerIds);
       this.$store.commit('updateSetTicked', {
         tick: this.viewLayers,
         untick: layerIds,
@@ -335,6 +338,162 @@ export default {
 
     //this is the data object that holds the sections and info
     offshore() {
+      return [
+        {
+          sectionName: 'Environmental',
+          sectionIcon: 'language',
+          sectionData: [
+            {
+              name: 'Lake Shoreline - 200 m buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_Shoreline_200m']),
+              rule: '',
+              description:
+                'Based on the EAC Guidelines -  a 200 m buffer is recommended between the shore and aquaculture operations.',
+              layers: [{ name: 'Lake Shoreline - 200 m buffer', id: '13_0' }],
+            },
+            {
+              name: 'Lake Bays - 2 km buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_All_Bays_2km']),
+              rule: '',
+              description:
+                'Bays offer protection from strong weather on the lake, these areas may have conditions suitable for aquaculture development.',
+              layers: [{ name: 'Lake Bays - 2 km buffer', id: '14_0' }],
+            },
+            {
+              name: 'River mouths - 3 km buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_river_3km']),
+              rule: '',
+              description:
+                'The mouth of large rivers should be avoided, as they can discharge large amounts of sediments.',
+              layers: [{ name: 'River mouths - 3 km buffer', id: '15_0' }],
+            },
+            {
+              name: 'Lake Bathymetry (m)',
+              caption: '',
+              meetsRule: this.calcZeros(['BT_LakeT_dbm']),
+              rule: '',
+              description:
+                'Water depth should be sufficient to the health of the environment and fish. International best practices suggest at least 2x the depth of the cage.',
+              layers: [{ name: 'Lake Bathymetry (m)', id: '16_0' }],
+            },
+            {
+              name: 'Kd490 measure of turbidity - 2011 - 2022',
+              caption: '',
+              meetsRule: this.calcZeros(['Kd490VIIRS10Year95th_100']),
+              rule: '',
+              description:
+                'Kd490 is a measure of turbidity, where high values correspond to increased sediments in the water and decreased water clarity.',
+              layers: [
+                {
+                  name: 'Kd490 measure of turbidity - 2011 - 2022',
+                  id: '18_0',
+                },
+              ],
+            },
+            {
+              name: 'Lake Surface Temperature (°C) - 2011 - 2022',
+              caption: '',
+              meetsRule: this.calcZeros(['SSTMUR10Year95th_100']),
+              rule: '',
+              description:
+                'Changes in water temperature affect fish metabolism, oxygen consumption, and ammonia and carbon dioxide production rates, Feed Conversion Ratio (FCR) as well as fish growth.',
+              layers: [
+                {
+                  name: 'Lake Surface Temperature (°C) - 2011 - 2022',
+                  id: '17_0',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          sectionName: 'Infrastructure',
+          sectionIcon: 'houseboat',
+          sectionData: [
+            {
+              name: 'Existing Aquaculture Sites - 2 km buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_Aqua_Sites_2km_w']),
+              rule: '',
+              description:
+                'Existing commercial cage fish farming sites should be 2 km away from new operations.',
+              layers: [
+                { name: 'Existing Aquaculture Sites - 2 km buffer', id: '8_0' },
+              ],
+            },
+            {
+              name: 'Ferry routes - 1 km buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_Ferry_1km_w']),
+              rule: '',
+              description:
+                'The Liemba ferry may resume service and this known route should be avoided for aquaculture development.',
+              layers: [{ name: 'Ferry routes - 1 km buffer', id: '9_0' }],
+            },
+            {
+              name: 'Road network - 5 km buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_Roads_5km_w']),
+              rule: '',
+              description:
+                'New aquaculture development should have access to market and supplies necessary to succeed.',
+              layers: [{ name: 'Road network - 5 km buffer', id: '10_0' }],
+            },
+            {
+              name: 'Ports and harbors - 2 km buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_Ports_2km_w']),
+              rule: '',
+              description:
+                'Established ports and harbors and approaches should be avoided.',
+              layers: [{ name: 'Ports and harbors - 2 km buffer', id: '11_0' }],
+            },
+          ],
+        },
+        {
+          sectionName: 'Natural Resources',
+          sectionIcon: 'spa',
+          sectionData: [
+            {
+              name: 'Critically Endangered Cichlids - 500 m buffer',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_cichlid_CR_lk_500m_w']),
+              rule: '',
+              description:
+                'These are IUCN Critically Endangered Cichlid species, these areas should be avoided.',
+              layers: [
+                {
+                  name: 'Critically Endangered Cichlids - 500 m buffer',
+                  id: '4_0',
+                },
+              ],
+            },
+            {
+              name: 'Proposed Key Biodiversity Areas',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_KBA_500m_w']),
+              rule: '',
+              description:
+                'These areas have been proposed as on the Lake KBAs.',
+              layers: [{ name: 'Proposed Key Biodiversity Areas', id: '5_0' }],
+            },
+            {
+              name: 'Protected areas',
+              caption: '',
+              meetsRule: this.calcZeros(['LakeT_protected_areas_200m_w']),
+              rule: '',
+              description:
+                'Sensitive protected areas should be avoided for new aquaculture development.',
+              layers: [{ name: 'Protected areas', id: '6_0' }],
+            },
+          ],
+        },
+      ];
+    },
+    offshore_old() {
       return [
         {
           sectionName: 'Ambiental',

@@ -13,9 +13,9 @@ export default createStore({
       supportingMapLayers: [
         {
           mapService:
-            'https://services2.coastalresilience.org/arcgis/rest/services/Mexico/AquacultureSuitability/MapServer',
-          skipLayers: [0, 2],
-          title: 'Mexico Aquaculture Study',
+            'https://services2.coastalresilience.org/arcgis/rest/services/Tanganyika/Map/MapServer',
+          skipLayers: [],
+          title: 'Lake Tanganyika Aquaculture Study',
           popupTemplate: [
             {
               title: 'Watershed Boundary',
@@ -50,7 +50,7 @@ export default createStore({
       siteCreated: false,
       drawStatus: '',
       printStatus: '',
-      species: 'none',
+      species: '',
     },
     userSiteMap: {
       drawAcres: '',
@@ -116,9 +116,7 @@ export default createStore({
     },
     updateCustomURLCorners(state, obj) {
       state.userSiteMap.customURL =
-        window.location.origin +
-        '/palau/#/create?corners=' +
-        encodeURIComponent(obj);
+        window.location.origin + '/#/create?corners=' + encodeURIComponent(obj);
     },
     updateCornersDecimalDegrees(state, obj) {
       state.userSiteMap.siteCornersDecimalDegrees = obj;

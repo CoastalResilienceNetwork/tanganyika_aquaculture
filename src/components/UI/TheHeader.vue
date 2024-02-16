@@ -2,9 +2,7 @@
   <header class="print-hide">
     <span class="text-green-1"
       >Aquaculture Site Suitability
-      <span class="text-subtitle2 q-ml-sm text-green-1"
-        >Baja Peninsula - Mexico</span
-      >
+      <span class="text-subtitle2 q-ml-sm text-green-1">Lake Tanganyika</span>
     </span>
 
     <div>

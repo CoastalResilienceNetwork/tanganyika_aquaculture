@@ -148,12 +148,12 @@
       </tr-->
       <tr>
         <td style="background-color: rgb(25,95,100, .1)" class="text-left">
-          Wave Height (m)
+          Wind Speed (m/s)
         </td>
         <td class="text-left">
           {{
             Math.round(
-              ($store.state.userResults.rasterStatistics.avg_hsig +
+              ($store.state.userResults.rasterStatistics.avg_wind +
                 Number.EPSILON) *
                 100
             ) / 100
@@ -162,7 +162,7 @@
         <td class="text-left">
           {{
             Math.round(
-              ($store.state.userResults.rasterStatistics.min_hsig +
+              ($store.state.userResults.rasterStatistics.min_wind +
                 Number.EPSILON) *
                 100
             ) / 100
@@ -171,7 +171,7 @@
         <td class="text-left">
           {{
             Math.round(
-              ($store.state.userResults.rasterStatistics.max_hsig +
+              ($store.state.userResults.rasterStatistics.max_wind +
                 Number.EPSILON) *
                 100
             ) / 100
